@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Boxloc (Login)</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+    #login-form {
+      margin-top: 50px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Login</h1>
+  <div id="login-form">
+    <input type="text" id="username" placeholder="Username"><br><br>
+    <input type="password" id="password" placeholder="Password"><br><br>
+    <select id="user-type">
+      <option value="student">Student</option>
+      <option value="teacher">Teacher</option>
+    </select><br><br>
+    <button onclick="login()">Login</button>
+  </div>
+
+  <script>
+    function login() {
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      const userType = document.getElementById('user-type').value;
+
+      // Check if username and password are correct (for simplicity, hardcoding)
+      if (localStorage.getItem(username) === password) {
+        // Save login state
+        localStorage.setItem('loggedIn', 'true');
+        localStorage.setItem('userType', userType);
+        localStorage.setItem('username', username);
+        
+        // Redirect to appropriate page based on user type
+        if (userType === 'student') {
+          window.location.href = 'student_dashboard.html';
+        } else if (userType === 'teacher') {
+          window.location.href = 'teacher_dashboard.html';
+        }
+      } else {
+        alert('Invalid username or password');
+      }
+    }
+  </script>
+</body>
+</html>

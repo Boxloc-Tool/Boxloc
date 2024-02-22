@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Boxloc - Teacher Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+    #student-points {
+      margin-top: 50px;
+    }
+    table {
+      width: 50%;
+      margin: 0 auto;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid black;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Boxloc - Teacher Dashboard</h1>
+  <div id="student-points">
+    <h2>Students' Points</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Student Name</th>
+          <th>Points</th>
+        </tr>
+      </thead>
+      <tbody id="points-table">
+        <!-- Points for students will be dynamically added here -->
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    // Function to load students' points
+    function loadStudentsPoints() {
+      // Clear existing table rows
+      const pointsTable = document.getElementById('points-table');
+      pointsTable.innerHTML = '';
+
+      // Iterate through local storage to get students' points
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        // Check if the key represents a student (assuming student usernames start with 'student_')
+        if (key.startsWith('student_')) {
+          const studentName = key.substring('student_'.length);
+          const points = localStorage.getItem(key);
+          // Add a new row to the table
+          const newRow = document.createElement('tr');
+          newRow.innerHTML = `
+            <td>${studentName}</td>
+            <td>${points}</td>
+          `;
+          pointsTable.appendChild(newRow);
+        }
+      }
+    }
+
+    // Load students' points when the page loads
+    window.onload = function() {
+      loadStudentsPoints();
+    };
+  </script>
+</body>
+</html>
