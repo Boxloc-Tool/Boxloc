@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Boxloc - Student Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Boxloc - Student Dashboard</h1>
+
+  <!-- Student Dashboard Section -->
+  <div id="student-dashboard" class="page-section">
+    <h2>Welcome, <span id="student-name"></span>!</h2>
+    <div id="student-points">
+      <p>Your points: <span id="points">0</span></p>
+    </div>
+    <button onclick="logout()">Logout</button>
+  </div>
+
+  <script>
+    function updatePoints() {
+      // Retrieve current points
+      let points = parseInt(localStorage.getItem('points')) || 0;
+
+      // Increment points by 1
+      points++;
+
+      // Save updated points
+      localStorage.setItem('points', points);
+
+      // Update points display
+      document.getElementById('points').textContent = points;
+    }
+
+    function logout() {
+      // Clear login state
+      localStorage.removeItem('loggedIn');
+      localStorage.removeItem('userType');
+      localStorage.removeItem('username');
+
+      // Show login section
+      window.location.href = 'login.html';
+    }
+
+    // Check if user is already logged in
+    window.onload = function() {
+      const loggedIn = localStorage.getItem('loggedIn');
+      const userType = localStorage.getItem('userType');
+      const username = localStorage.getItem('username');
+
+      if (loggedIn === 'true' && userType === 'student') {
+        document.getElementById('student-dashboard').classList.remove('hidden');
+        document.getElementById('student-name').textContent = username;
+
+        // Load and update points
+        let points = parseInt(localStorage.getItem('points')) || 0;
+        document.getElementById('points').textContent = points;
+
+        // Schedule point update to occur daily
+        setInterval(updatePoints, 24 * 60 * 60 * 1000); // 24 hours in milliseconds
+      } else {
+        // Redirect to login page if not logged in or not a student
+        window.location.href = 'login.html';
+      }
+    };
+  </script>
+</body>
+</html>
